@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/fdc21eb6-b9f0-4931-9cf2-508b723c0d94/console.sql" value="fdc21eb6-b9f0-4931-9cf2-508b723c0d94" />
+    <file url="file://$PROJECT_DIR$/DAT605/DeleteAll.sql" value="fdc21eb6-b9f0-4931-9cf2-508b723c0d94" />
+    <file url="file://$PROJECT_DIR$/DAT605/universitydb insert.sql" value="fdc21eb6-b9f0-4931-9cf2-508b723c0d94" />
+    <file url="file://$PROJECT_DIR$/DAT605/universitydb.sql" value="fdc21eb6-b9f0-4931-9cf2-508b723c0d94" />
+  </component>
+</project>
