@@ -174,6 +174,3 @@ insert into prerequisites(coursecode, preqid) values ('DS-413', 'DS-113');
 insert into prerequisites(coursecode, preqid) values ('DS-414', 'DS-114');
 insert into prerequisites(coursecode, preqid) values ('DS-415', 'DS-115');
 
-
-
-

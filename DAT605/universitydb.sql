@@ -89,3 +89,6 @@ create table takes(
 	foreign key(coursecode, sectionid, semester, year) references section on delete cascade,
 	foreign key(studentid) references student on delete cascade
 )
+
+
+where lower(deptname) = 'physics';
