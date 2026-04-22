@@ -9,4 +9,4 @@ streamlit~=1.50.0
 joblib~=1.5.2
 parso~=0.8.5
 keras~=3.10.0
-tensorflow~=2.19.0
+huggingface-hub==1.8.0
