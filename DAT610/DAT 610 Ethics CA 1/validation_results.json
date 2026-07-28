@@ -1,0 +1,130 @@
+{
+  "level1_summary_stats": {
+    "transaction_amount": {
+      "real_mean": 27398.1,
+      "synth_mean": 51610.82,
+      "mean_diff_pct": 88.4,
+      "pass_10pct": false
+    },
+    "account_balance": {
+      "real_mean": 295523.54,
+      "synth_mean": 271886.71,
+      "mean_diff_pct": 8.0,
+      "pass_10pct": true
+    },
+    "distance_from_home_km": {
+      "real_mean": 9.04,
+      "synth_mean": 96.89,
+      "mean_diff_pct": 971.8,
+      "pass_10pct": false
+    },
+    "customer_age": {
+      "real_mean": 38.67,
+      "synth_mean": 44.82,
+      "mean_diff_pct": 15.9,
+      "pass_10pct": false
+    },
+    "num_transactions_30d": {
+      "real_mean": 12.32,
+      "synth_mean": 13.65,
+      "mean_diff_pct": 10.8,
+      "pass_10pct": false
+    },
+    "transaction_hour": {
+      "real_mean": 14.71,
+      "synth_mean": 13.29,
+      "mean_diff_pct": 9.6,
+      "pass_10pct": true
+    }
+  },
+  "fraud_rate": {
+    "real": 0.01,
+    "synthetic": 0.1455
+  },
+  "level2_correlation_max_abs_gap": 0.971,
+  "level2_worst_correlation_pairs": {
+    "transaction_amount vs account_balance": {
+      "real": 0.973,
+      "synthetic": 0.001
+    },
+    "distance_from_home_km vs is_fraud": {
+      "real": 0.842,
+      "synthetic": 0.049
+    },
+    "account_balance vs customer_age": {
+      "real": 0.817,
+      "synthetic": 0.029
+    }
+  },
+  "level3a_ks": {
+    "transaction_amount": {
+      "ks_stat": 0.1935,
+      "p_value": 3.813634596322189e-33,
+      "aligned": false
+    },
+    "account_balance": {
+      "ks_stat": 0.22,
+      "p_value": 8.437890685232294e-43,
+      "aligned": false
+    },
+    "distance_from_home_km": {
+      "ks_stat": 0.414,
+      "p_value": 7.850784714587478e-154,
+      "aligned": false
+    }
+  },
+  "level3b_chi2": {
+    "merchant_category": {
+      "chi2": 423.94,
+      "p_value": 1.8625261088232283e-90,
+      "aligned": false
+    },
+    "is_fraud": {
+      "chi2": 3709.14,
+      "p_value": 0.0,
+      "aligned": false
+    }
+  },
+  "level3c_wasserstein": {
+    "transaction_amount": {
+      "wasserstein_norm": 0.7406,
+      "rating": "poor"
+    },
+    "account_balance": {
+      "wasserstein_norm": 0.3591,
+      "rating": "poor"
+    },
+    "distance_from_home_km": {
+      "wasserstein_norm": 2.464,
+      "rating": "poor"
+    },
+    "customer_age": {
+      "wasserstein_norm": 0.5254,
+      "rating": "poor"
+    },
+    "num_transactions_30d": {
+      "wasserstein_norm": 0.5165,
+      "rating": "poor"
+    },
+    "transaction_hour": {
+      "wasserstein_norm": 0.4824,
+      "rating": "poor"
+    }
+  },
+  "level4_tstr": {
+    "trtr_auc": 1.0,
+    "tstr_auc": 1.0,
+    "auc_gap": 0.0,
+    "trtr_avg_precision": 1.0,
+    "tstr_avg_precision": 1.0,
+    "verdict": "fully equivalent",
+    "test_set_size": 400,
+    "test_set_fraud_cases": 4
+  },
+  "level5_dnnr": {
+    "median_d_sr": 3.1737,
+    "median_d_rr": 0.0116,
+    "dnnr": 274.741,
+    "interpretation": "privacy preserved"
+  }
+}
