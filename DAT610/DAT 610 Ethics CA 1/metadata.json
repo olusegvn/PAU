@@ -1,5 +1,4 @@
 {
-    "METADATA_SPEC_VERSION": "SINGLE_TABLE_V1",
     "columns": {
         "transaction_amount": {
             "sdtype": "numerical"
@@ -28,5 +27,6 @@
         "is_fraud": {
             "sdtype": "categorical"
         }
-    }
+    },
+    "METADATA_SPEC_VERSION": "SINGLE_TABLE_V1"
 }

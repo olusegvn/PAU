@@ -2,17 +2,7 @@
 DAT610 CA1, Part B: Five-level validation of the CTGAN synthetic dataset.
 
 The synthetic dataset is assessed against the real dataset with the
-five-level distributional alignment framework:
-
-    Level 1: Summary statistics, side-by-side means with a 10% tolerance.
-    Level 2: Visual distributions, KDE plots, categorical bar charts and
-             correlation heatmaps (saved to the figures directory).
-    Level 3: Statistical tests, Kolmogorov-Smirnov for continuous columns,
-             Chi-squared for categorical columns, and normalised
-             Wasserstein distance for drift magnitude.
-    Level 4: ML utility, Train-Synthetic-Test-Real (TSTR) against the
-             Train-Real-Test-Real (TRTR) baseline on a shared real test set.
-    Level 5: Privacy, Distance to Nearest Neighbour Ratio (DNNR).
+five-level distributional alignment framework.
 
 Every computed value is written to validation_results.json so the report
 quotes the exact numbers produced by this script.
@@ -20,8 +10,6 @@ quotes the exact numbers produced by this script.
 
 import json
 
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -46,10 +34,10 @@ CATEGORICAL = ["merchant_category", "is_fraud"]
 
 results = {}
 
-# ---------------------------------------------------------------------------
-# Level 1: summary statistics. Means within 10% of the real value pass the
-# screening; a gap above 20% would block further validation on that feature.
-# ---------------------------------------------------------------------------
+"""
+Level 1: summary statistics. Means within 10% of the real value pass the
+screening; a gap above 20% would block further validation on that feature.
+"""
 level1 = {}
 for col in NUMERIC:
     real_mean = real_df[col].mean()
@@ -73,12 +61,11 @@ results["fraud_rate"] = {
     "real": round(float(real_fraud_rate), 4),
     "synthetic": round(float(synth_fraud_rate), 4),
 }
-print("fraud rate real=%.4f synthetic=%.4f" % (real_fraud_rate, synth_fraud_rate))
+print(f"fraud rate real={real_fraud_rate} synthetic={synth_fraud_rate}")
 
-# ---------------------------------------------------------------------------
-# Level 2: visual distributions. The figures are diagnosed in the report;
-# statistics can agree while shapes diverge, so plots are mandatory.
-# ---------------------------------------------------------------------------
+"""
+Level 2: visual distributions. 
+"""
 fig, axes = plt.subplots(2, 3, figsize=(15, 8))
 for ax, col in zip(axes.ravel(), NUMERIC):
     sns.kdeplot(real_df[col], ax=ax, label="Real", fill=True, alpha=0.3)
@@ -139,10 +126,8 @@ results["level2_worst_correlation_pairs"] = {
 print("Level 2: figures saved, max absolute correlation gap = %.3f" % corr_max_abs_gap)
 print(json.dumps(results["level2_worst_correlation_pairs"], indent=2))
 
-# ---------------------------------------------------------------------------
 # Level 3a: Kolmogorov-Smirnov test on continuous columns. H0 is that the
 # two samples come from the same distribution; p > 0.05 fails to reject H0.
-# ---------------------------------------------------------------------------
 level3a = {}
 for col in CONTINUOUS:
     ks_stat, p_value = stats.ks_2samp(real_df[col].dropna(), synth_df[col].dropna())
@@ -155,10 +140,8 @@ results["level3a_ks"] = level3a
 print("Level 3a: KS test")
 print(pd.DataFrame(level3a).T.to_string())
 
-# ---------------------------------------------------------------------------
 # Level 3b: Chi-squared test on categorical columns. Expected counts are the
 # real proportions scaled to the synthetic sample size.
-# ---------------------------------------------------------------------------
 level3b = {}
 for col in CATEGORICAL:
     cats = sorted(real_df[col].unique())
@@ -174,11 +157,8 @@ results["level3b_chi2"] = level3b
 print("Level 3b: Chi-squared test")
 print(pd.DataFrame(level3b).T.to_string())
 
-# ---------------------------------------------------------------------------
 # Level 3c: Wasserstein distance normalised by the real standard deviation,
-# so the drift magnitude is comparable across features. Below 0.05 is
-# excellent, 0.05 to 0.15 acceptable, above 0.15 poor.
-# ---------------------------------------------------------------------------
+# so the drift magnitude is comparable across features.
 level3c = {}
 for col in NUMERIC:
     wd = stats.wasserstein_distance(real_df[col], synth_df[col])
@@ -189,11 +169,9 @@ results["level3c_wasserstein"] = level3c
 print("Level 3c: normalised Wasserstein distance")
 print(pd.DataFrame(level3c).T.to_string())
 
-# ---------------------------------------------------------------------------
 # Level 4: ML utility, TSTR vs TRTR. A shared 20% real test set is held out
 # before any training. TRTR trains on the remaining real data; TSTR trains
 # on the synthetic data only. Both are evaluated on the same real test set.
-# ---------------------------------------------------------------------------
 def encode(df, columns):
     X = pd.get_dummies(df.drop(columns=["is_fraud"]), columns=["merchant_category"])
     return X.reindex(columns=columns, fill_value=0)
@@ -240,11 +218,10 @@ results["level4_tstr"] = {
 print("Level 4: TRTR AUC=%.4f TSTR AUC=%.4f gap=%.4f (%s)" % (trtr_auc, tstr_auc, auc_gap, verdict))
 print("Level 4: TRTR AP=%.4f TSTR AP=%.4f" % (trtr_ap, tstr_ap))
 
-# ---------------------------------------------------------------------------
 # Level 5: privacy, Distance to Nearest Neighbour Ratio. Records are one-hot
 # encoded and standardised on the real data so no feature dominates the
 # distance. DNNR at or below 1.0 signals memorisation of real records.
-# ---------------------------------------------------------------------------
+
 def encode_full(df, columns):
     X = pd.get_dummies(df, columns=["merchant_category"])
     return X.reindex(columns=columns, fill_value=0).astype(float)
